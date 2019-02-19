@@ -1,5 +1,10 @@
 'use strict';
 
+const MIN_NUMBER_OF_TASKS = 2;
+
+const filtersElement = document.querySelector(`.main__filter`);
+const tasksElement = document.querySelector(`.board__tasks`);
+
 const getRandomInt = (min, max) => Math.floor(Math.random() * Math.floor((max - min) + 1) + min);
 
 const populateDom = (array, parentElement, render, clear = false) => {
@@ -50,48 +55,54 @@ const taskMocks = [
   {
     color: `black`,
     type: `repeat`,
-    text: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`
+    text: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
+    hashtags: [`best ever task`, `repeat`, `cinema`],
   },
   {
     color: `yellow`,
     type: `deadline`,
-    text: `Many desktop publishing packages and web page editors now use Lorem Ipsum as their`
+    text: `Many desktop publishing packages and web page editors now use Lorem Ipsum as their`,
+    hashtags: [`cars`, `babies`, `bathroom`],
   },
   {
     color: `pink`,
     type: `repeat`,
     text: `Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil)`,
+    hashtags: [`dogs`, `repos`, `bitbucket`],
   },
   {
     color: `green`,
     type: `deadline`,
     text: `All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. `,
+    hashtags: [`lorem`, `ipsum`, `dolor`],
   },
   {
     color: `blue`,
     type: `repeat`,
     text: `The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.`,
+    hashtags: [`slayer`, `metla`, `megadeath`],
   },
   {
     color: `yellow`,
     type: `deadline`,
     text: `It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
+    hashtags: [`better`, `best`, `the best`],
   },
   {
     color: `black`,
     type: `repeat`,
     text: `If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text`,
+    hashtags: [`by now`, `i am`, `bored`],
   },
 ];
 
 const makeFilter = (config) => {
   const {
     name,
-    numberOfTasks,
+    numberOfTasks = getRandomInt(1, 100),
     checked,
     disabled,
   } = config;
-  const count = numberOfTasks || getRandomInt(1, 100);
   return `<input
     type="radio"
     id="filter__${name}"
@@ -102,40 +113,125 @@ const makeFilter = (config) => {
   />
   <label for="filter__${name}" class="filter__label">
     ${name.toUpperCase()}
-    <span class="filter__all-count">${count}</span>
+    <span class="filter__all-count">${numberOfTasks}</span>
   </label
   > `;
 };
 
-const renderFilters = () => {
-  const filtersElement = document.querySelector(`.main__filter`);
-  populateDom(filterMocks, filtersElement, makeFilter, true);
+const makeTaskButtons = () => `<div class="card__control">
+    <button type="button" class="card__btn card__btn--edit">
+      edit
+    </button>
+    <button type="button" class="card__btn card__btn--archive">
+      archive
+    </button>
+    <button
+      type="button"
+      class="card__btn card__btn--favorites card__btn--disabled"
+    >
+      favorites
+    </button>
+  </div>`;
+
+
+const makeTaskHashtag = (hashtag) => {
+  return `<span class="card__hashtag-inner">
+    <input
+      type="hidden"
+      name="hashtag"
+      value="repeat"
+      class="card__hashtag-hidden-input"
+    />
+    <button type="button" class="card__hashtag-name">
+      #${hashtag}
+    </button>
+    <button type="button" class="card__hashtag-delete">
+      delete
+    </button>
+  </span>`;
 };
+
+const makeTaskHashtags = (arr) => arr.map((item) => makeTaskHashtag(item)).reduce((acc, current) => acc + current, ``);
+
+const makeTaskColorInputs = () => `<div class="card__colors-inner">
+    <h3 class="card__colors-title">Color</h3>
+    <div class="card__colors-wrap">
+      <input
+        type="radio"
+        id="color-black-2"
+        class="card__color-input card__color-input--black visually-hidden"
+        name="color"
+        value="black"
+      />
+      <label
+        for="color-black-2"
+        class="card__color card__color--black"
+        >black</label
+      >
+      <input
+        type="radio"
+        id="color-yellow-2"
+        class="card__color-input card__color-input--yellow visually-hidden"
+        name="color"
+        value="yellow"
+      />
+      <label
+        for="color-yellow-2"
+        class="card__color card__color--yellow"
+        >yellow</label
+      >
+      <input
+        type="radio"
+        id="color-blue-2"
+        class="card__color-input card__color-input--blue visually-hidden"
+        name="color"
+        value="blue"
+      />
+      <label
+        for="color-blue-2"
+        class="card__color card__color--blue"
+        >blue</label
+      >
+      <input
+        type="radio"
+        id="color-green-2"
+        class="card__color-input card__color-input--green visually-hidden"
+        name="color"
+        value="green"
+      />
+      <label
+        for="color-green-2"
+        class="card__color card__color--green"
+        >green</label
+      >
+      <input
+        type="radio"
+        id="color-pink-2"
+        class="card__color-input card__color-input--pink visually-hidden"
+        name="color"
+        value="pink"
+        checked
+      />
+      <label
+        for="color-pink-2"
+        class="card__color card__color--pink"
+        >pink</label
+      >
+    </div>
+  </div>
+  </div>`;
 
 const makeTask = (config) => {
   const {
     color,
     type,
     text,
+    hashtags
   } = config;
   return `<article class="card card--${color} card--${type}">
     <form class="card__form" method="get">
       <div class="card__inner">
-        <div class="card__control">
-          <button type="button" class="card__btn card__btn--edit">
-            edit
-          </button>
-          <button type="button" class="card__btn card__btn--archive">
-            archive
-          </button>
-          <button
-            type="button"
-            class="card__btn card__btn--favorites card__btn--disabled"
-          >
-            favorites
-          </button>
-        </div>
-
+        ${makeTaskButtons()}
         <div class="card__color-bar">
           <svg class="card__color-bar-wave" width="100%" height="10">
             <use xlink:href="#wave"></use>
@@ -264,51 +360,7 @@ const makeTask = (config) => {
 
             <div class="card__hashtag">
               <div class="card__hashtag-list">
-                <span class="card__hashtag-inner">
-                  <input
-                    type="hidden"
-                    name="hashtag"
-                    value="repeat"
-                    class="card__hashtag-hidden-input"
-                  />
-                  <button type="button" class="card__hashtag-name">
-                    #repeat
-                  </button>
-                  <button type="button" class="card__hashtag-delete">
-                    delete
-                  </button>
-                </span>
-
-                <span class="card__hashtag-inner">
-                  <input
-                    type="hidden"
-                    name="hashtag"
-                    value="repeat"
-                    class="card__hashtag-hidden-input"
-                  />
-                  <button type="button" class="card__hashtag-name">
-                    #cinema
-                  </button>
-                  <button type="button" class="card__hashtag-delete">
-                    delete
-                  </button>
-                </span>
-
-                <span class="card__hashtag-inner">
-                  <input
-                    type="hidden"
-                    name="hashtag"
-                    value="repeat"
-                    class="card__hashtag-hidden-input"
-                  />
-                  <button type="button" class="card__hashtag-name">
-                    #entertaiment
-                  </button>
-                  <button type="button" class="card__hashtag-delete">
-                    delete
-                  </button>
-                </span>
-              </div>
+              ${makeTaskHashtags(hashtags)}
 
               <label>
                 <input
@@ -333,75 +385,7 @@ const makeTask = (config) => {
               class="card__img"
             />
           </label>
-
-          <div class="card__colors-inner">
-            <h3 class="card__colors-title">Color</h3>
-            <div class="card__colors-wrap">
-              <input
-                type="radio"
-                id="color-black-2"
-                class="card__color-input card__color-input--black visually-hidden"
-                name="color"
-                value="black"
-              />
-              <label
-                for="color-black-2"
-                class="card__color card__color--black"
-                >black</label
-              >
-              <input
-                type="radio"
-                id="color-yellow-2"
-                class="card__color-input card__color-input--yellow visually-hidden"
-                name="color"
-                value="yellow"
-              />
-              <label
-                for="color-yellow-2"
-                class="card__color card__color--yellow"
-                >yellow</label
-              >
-              <input
-                type="radio"
-                id="color-blue-2"
-                class="card__color-input card__color-input--blue visually-hidden"
-                name="color"
-                value="blue"
-              />
-              <label
-                for="color-blue-2"
-                class="card__color card__color--blue"
-                >blue</label
-              >
-              <input
-                type="radio"
-                id="color-green-2"
-                class="card__color-input card__color-input--green visually-hidden"
-                name="color"
-                value="green"
-              />
-              <label
-                for="color-green-2"
-                class="card__color card__color--green"
-                >green</label
-              >
-              <input
-                type="radio"
-                id="color-pink-2"
-                class="card__color-input card__color-input--pink visually-hidden"
-                name="color"
-                value="pink"
-                checked
-              />
-              <label
-                for="color-pink-2"
-                class="card__color card__color--pink"
-                >pink</label
-              >
-            </div>
-          </div>
-        </div>
-
+        ${makeTaskColorInputs()}
         <div class="card__status-btns">
           <button class="card__save" type="submit">save</button>
           <button class="card__delete" type="button">delete</button>
@@ -412,13 +396,12 @@ const makeTask = (config) => {
 };
 
 const renderTasks = (numberOfTasks = taskMocks.length) => {
-  const tasksElement = document.querySelector(`.board__tasks`);
   const mockArray = taskMocks.slice(0, numberOfTasks);
   populateDom(mockArray, tasksElement, makeTask, true);
 };
 
 const onFilterClick = () => {
-  const numberOfTasks = getRandomInt(2, taskMocks.length);
+  const numberOfTasks = getRandomInt(MIN_NUMBER_OF_TASKS, taskMocks.length);
   renderTasks(numberOfTasks);
 };
 
@@ -430,7 +413,7 @@ const subscribeToFilterClicks = () => {
 };
 
 const init = () => {
-  renderFilters();
+  populateDom(filterMocks, filtersElement, makeFilter, true);
   renderTasks();
   subscribeToFilterClicks();
 };
