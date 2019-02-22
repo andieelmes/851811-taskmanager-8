@@ -2,7 +2,7 @@ import {populateDom} from '../utils';
 
 import makeTaskHashtag from './task-hashtag';
 import {
-  buttons,
+  cardСontrol,
   colorInputs
 } from '../data/templates';
 
@@ -10,7 +10,7 @@ import taskMocks from '../data/tasks';
 
 const tasksElement = document.querySelector(`.board__tasks`);
 
-const makeTaskHashtags = (arr) => arr.map((item) => makeTaskHashtag(item)).reduce((acc, current) => acc + current, ``);
+const makeTaskHashtags = (tasks) => tasks.map((task) => makeTaskHashtag(task)).join(``);
 
 const makeTask = (config) => {
   const {
@@ -22,7 +22,7 @@ const makeTask = (config) => {
   return `<article class="card card--${color} card--${type}">
     <form class="card__form" method="get">
       <div class="card__inner">
-        ${buttons}
+        ${cardСontrol}
         <div class="card__color-bar">
           <svg class="card__color-bar-wave" width="100%" height="10">
             <use xlink:href="#wave"></use>
@@ -176,7 +176,7 @@ const makeTask = (config) => {
               class="card__img"
             />
           </label>
-        ${colorInputs}
+        ${colorInputs()}
         <div class="card__status-btns">
           <button class="card__save" type="submit">save</button>
           <button class="card__delete" type="button">delete</button>
