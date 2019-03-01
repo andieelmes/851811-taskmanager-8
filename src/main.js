@@ -9,7 +9,12 @@ import subscribeToFilterClicks from './actions/filter';
 const filtersElement = document.querySelector(`.main__filter`);
 
 const init = () => {
-  populateDom(filterMocks, filtersElement, makeFilter, true);
+  populateDom({
+    array: filterMocks,
+    parentElement: filtersElement,
+    render: makeFilter,
+    clear: true
+  });
   renderTasks();
   subscribeToFilterClicks();
 };

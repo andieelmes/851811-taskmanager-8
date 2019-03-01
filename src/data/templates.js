@@ -1,6 +1,7 @@
+import nanoid from 'nanoid';
 import makeColors from '../render/color';
 
-export const cardСontrol = `<div class="card__control">
+export const cardСontrol = (isFavourite) => `<div class="card__control">
     <button type="button" class="card__btn card__btn--edit">
       edit
     </button>
@@ -9,9 +10,9 @@ export const cardСontrol = `<div class="card__control">
     </button>
     <button
       type="button"
-      class="card__btn card__btn--favorites card__btn--disabled"
+      class="card__btn card__btn--favorites ${isFavourite ? `` : `card__btn--disabled`}"
     >
-      favorites
+    ${isFavourite ? `favourites` : `fav`}
     </button>
     </div>`;
 
@@ -24,4 +25,23 @@ export const colorInputs = () => {
       ${makeColors(colors)}
     </div>
   </div>`;
+};
+
+export const repeatInputs = (repeatingDays) => {
+  const uniqId = nanoid();
+
+  return [...repeatingDays].map((day) => {
+    const [name, repeats] = day;
+    return `<input
+        class="visually-hidden card__repeat-day-input"
+        type="checkbox"
+        id="repeat-${name}-2-${uniqId}"
+        name="repeat"
+        value="${name}"
+        ${repeats ? `checked` : ``}
+      />
+      <label class="card__repeat-day" for="repeat-${name}-2-${uniqId}"
+        >${name}</label
+      >`;
+  });
 };

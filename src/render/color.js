@@ -1,22 +1,33 @@
+import nanoid from 'nanoid';
 import {getRandomInt} from '../utils';
 
-const makeColor = (color) => {
-  const checked = getRandomInt(1, 2) === 1;
+const makeColor = (color, checked = false) => {
+  const uniqId = nanoid();
   return `<input
       type="radio"
-      id="color-${color}-2"
+      id="color-${color}-2-${uniqId}"
       class="card__color-input card__color-input--${color} visually-hidden"
       name="color"
       value="${color}"
       ${checked ? `checked` : ``}
     />
     <label
-      for="color-black-2"
+      for="color-${color}-2-${uniqId}"
       class="card__color card__color--${color}"
       >${color}</label
     >`;
 };
 
-const makeColors = (colors) => colors.map((color) => makeColor(color)).join(``);
+const makeColors = (colors) => {
+  const randomCheckedRadioIndex = getRandomInt(0, colors.length);
+
+  return colors.map((color, index) => {
+    if (index === randomCheckedRadioIndex) {
+      return makeColor(color, true);
+    } else {
+      return makeColor(color);
+    }
+  }).join(``);
+};
 
 export default makeColors;

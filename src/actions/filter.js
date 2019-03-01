@@ -1,11 +1,7 @@
-import {MIN_NUMBER_OF_TASKS} from '../constants';
-
-import taskMocks from '../data/tasks';
-import {getRandomInt} from '../utils';
 import renderTasks from '../render/task';
 
-const onFilterClick = () => {
-  const numberOfTasks = getRandomInt(MIN_NUMBER_OF_TASKS, taskMocks.length);
+const onFilterClick = (e) => {
+  const numberOfTasks = e.target.closest(`.filter__label`).getAttribute(`data-number-of-tasks`);
   renderTasks(numberOfTasks);
 };
 

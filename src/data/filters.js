@@ -1,11 +1,9 @@
 const filterMocks = [
   {
     name: `all`,
-    count: 120,
   },
   {
     name: `overdue`,
-    count: 3,
     checked: true,
   },
   {
@@ -18,15 +16,12 @@ const filterMocks = [
   },
   {
     name: `repeating`,
-    count: 23,
   },
   {
     name: `tags`,
-    count: 56,
   },
   {
     name: `archive`,
-    count: 21,
   },
 ];
 
