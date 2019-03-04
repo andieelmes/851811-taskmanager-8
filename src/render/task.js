@@ -4,11 +4,11 @@ import {
   getRandomElements
 } from '../utils';
 
-import makeTaskHashtag from './task-hashtag';
+import makeTaskHashtag from './taskHashtag';
 import {
-  cardСontrol,
-  colorInputs,
-  repeatInputs
+  getCardControl,
+  getColorInputs,
+  getRepeatInputs
 } from '../data/templates';
 
 import task from '../data/task';
@@ -30,7 +30,7 @@ const makeTask = (config, edit = false) => {
   } = config;
 
   const randomTags = getRandomElements(tags, getRandomInt(3, 5));
-  const hasRepeatingDays = [...repeatingDays].filter((day) => day[1] === true).length;
+  const hasRepeatingDays = repeatingDays.some((day) => day[1] === true);
 
   return `<article class="card
       card--${color}
@@ -39,7 +39,7 @@ const makeTask = (config, edit = false) => {
     ">
       <form class="card__form" method="get">
         <div class="card__inner">
-          ${cardСontrol(isFavorite)}
+          ${getCardControl(isFavorite)}
           <div class="card__color-bar">
             <svg class="card__color-bar-wave" width="100%" height="10">
               <use xlink:href="#wave"></use>
@@ -91,7 +91,7 @@ const makeTask = (config, edit = false) => {
 
                 <fieldset class="card__repeat-days" ${hasRepeatingDays ? `` : `disabled`}>
                   <div class="card__repeat-days-inner">
-                    ${repeatInputs(repeatingDays)}
+                    ${getRepeatInputs(repeatingDays)}
                   </div>
                 </fieldset>
               </div>
@@ -123,7 +123,7 @@ const makeTask = (config, edit = false) => {
               class="card__img"
             />
           </label>
-          ${colorInputs()}
+          ${getColorInputs(color)}
         </div>
         <div class="card__status-btns">
           <button class="card__save" type="submit">save</button>
@@ -134,15 +134,13 @@ const makeTask = (config, edit = false) => {
   </article>`;
 };
 
+const getTasks = (numberOfTasks = defaultNumberOfTasks, randomEditingTaskIndex = 0) => {
+  return new Array(numberOfTasks).fill(``).map((taskEl, index) => makeTask(task(), index === randomEditingTaskIndex));
+};
+
 const renderTasks = (numberOfTasks = defaultNumberOfTasks) => {
   const randomEditingTaskIndex = getRandomInt(0, numberOfTasks);
-  const tasks = new Array(+numberOfTasks).fill(``).map((taskEl, index) => {
-    if (index === randomEditingTaskIndex) {
-      return makeTask(task(), true);
-    } else {
-      return makeTask(task());
-    }
-  });
+  const tasks = getTasks(numberOfTasks, randomEditingTaskIndex);
   populateDom({
     array: tasks,
     parentElement: tasksElement,

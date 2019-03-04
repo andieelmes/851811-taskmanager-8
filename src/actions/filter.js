@@ -1,7 +1,7 @@
 import renderTasks from '../render/task';
 
 const onFilterClick = (e) => {
-  const numberOfTasks = e.target.closest(`.filter__label`).getAttribute(`data-number-of-tasks`);
+  const numberOfTasks = +e.target.closest(`.filter__label`).querySelector(`.filter__all-count`).innerHTML;
   renderTasks(numberOfTasks);
 };
 

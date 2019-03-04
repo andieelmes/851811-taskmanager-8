@@ -1,7 +1,8 @@
 import nanoid from 'nanoid';
 import makeColors from '../render/color';
+import {COLORS} from '../constants';
 
-export const cardСontrol = (isFavourite) => `<div class="card__control">
+export const getCardControl = (isFavourite) => `<div class="card__control">
     <button type="button" class="card__btn card__btn--edit">
       edit
     </button>
@@ -16,18 +17,16 @@ export const cardСontrol = (isFavourite) => `<div class="card__control">
     </button>
     </div>`;
 
-const colors = [`black`, `yellow`, `blue`, `green`, `pink`];
-
-export const colorInputs = () => {
+export const getColorInputs = () => {
   return `<div class="card__colors-inner">
     <h3 class="card__colors-title">Color</h3>
     <div class="card__colors-wrap">
-      ${makeColors(colors)}
+      ${makeColors(COLORS)}
     </div>
   </div>`;
 };
 
-export const repeatInputs = (repeatingDays) => {
+export const getRepeatInputs = (repeatingDays) => {
   const uniqId = nanoid();
 
   return [...repeatingDays].map((day) => {

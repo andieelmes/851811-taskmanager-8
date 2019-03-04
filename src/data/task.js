@@ -3,15 +3,16 @@ import {
   getRandomBool
 } from '../utils';
 
+import {COLORS} from '../constants';
 
-const task = () => {
+const getTask = () => {
   return {
     title: [
       `Изучить теорию`,
       `Сделать домашку`,
       `Пройти интенсив на соточку`,
     ][getRandomInt(0, 2)],
-    dueDate: Date.now() + 1 + getRandomInt(0, 6) * 24 * 60 * 60 * 1000,
+    dueDate: new Date(Date.now()).setDate(getRandomInt(-6, 6)),
     tags: new Set([
       `best ever task`,
       `repeat`,
@@ -29,24 +30,10 @@ const task = () => {
       `deadline`
     ][getRandomInt(0, 2)],
     picture: `//picsum.photos/100/100?r=${Math.random()}`,
-    color: [
-      `black`,
-      `yellow`,
-      `blue`,
-      `green`,
-      `pink`
-    ][getRandomInt(0, 4)],
-    repeatingDays: new Map([
-      [`mo`, getRandomBool()],
-      [`tu`, getRandomBool()],
-      [`we`, getRandomBool()],
-      [`th`, getRandomBool()],
-      [`fr`, getRandomBool()],
-      [`sa`, getRandomBool()],
-      [`su`, getRandomBool()],
-    ]),
+    color: COLORS[getRandomInt(0, 4)],
+    repeatingDays: [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`].map((day) => [day, getRandomBool()]),
     isFavorite: getRandomBool(),
   };
 };
 
-export default task;
+export default getTask;

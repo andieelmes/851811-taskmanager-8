@@ -21,13 +21,7 @@ const makeColor = (color, checked = false) => {
 const makeColors = (colors) => {
   const randomCheckedRadioIndex = getRandomInt(0, colors.length);
 
-  return colors.map((color, index) => {
-    if (index === randomCheckedRadioIndex) {
-      return makeColor(color, true);
-    } else {
-      return makeColor(color);
-    }
-  }).join(``);
+  return colors.map((color, index) => makeColor(color, index === randomCheckedRadioIndex)).join(``);
 };
 
 export default makeColors;
