@@ -127,7 +127,7 @@ class TaskEdit extends Component {
   }
 
   _makeTaskHashtags(hashtags) {
-    return [...hashtags].reduce((totalHashtags, hashtag) => totalHashtags + this._makeTaskHashtag(hashtag), ``);
+    return hashtags.reduce((totalHashtags, hashtag) => totalHashtags + this._makeTaskHashtag(hashtag), ``);
   }
 
   set onSubmit(fn) {

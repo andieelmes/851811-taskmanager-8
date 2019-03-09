@@ -122,7 +122,7 @@ class Task extends Component {
   }
 
   _makeTaskHashtags(hashtags) {
-    return [...hashtags].reduce((totalHashtags, hashtag) => totalHashtags + this._makeTaskHashtag(hashtag), ``);
+    return hashtags.reduce((totalHashtags, hashtag) => totalHashtags + this._makeTaskHashtag(hashtag), ``);
   }
 
 
