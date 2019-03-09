@@ -3,15 +3,20 @@ import {populateDom} from './utils';
 import filterMocks from './data/filters';
 
 import makeFilter from './render/filter';
-import renderTasks from './render/task';
+import renderTasks from './actions/tasks';
 import subscribeToFilterClicks from './actions/filter';
 
 const filtersElement = document.querySelector(`.main__filter`);
 
 const init = () => {
-  populateDom(filterMocks, filtersElement, makeFilter, true);
+  populateDom({
+    array: filterMocks,
+    parentElement: filtersElement,
+    render: makeFilter,
+    clear: true
+  });
   renderTasks();
-  subscribeToFilterClicks();
+  subscribeToFilterClicks(filterMocks);
 };
 
 init();

@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack",
     "eslint": "eslint src/**/*.js",
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server --watch",
     "test": "npm run eslint"
   },
   "devDependencies": {
@@ -22,5 +22,9 @@
   },
   "engines": {
     "node": "10"
+  },
+  "dependencies": {
+    "lodash.shuffle": "^4.2.0",
+    "nanoid": "^2.0.1"
   }
 }

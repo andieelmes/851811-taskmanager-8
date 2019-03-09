@@ -1,18 +1,15 @@
-import {MIN_NUMBER_OF_TASKS} from '../constants';
+import renderTasks from './tasks';
 
-import taskMocks from '../data/tasks';
-import {getRandomInt} from '../utils';
-import renderTasks from '../render/task';
-
-const onFilterClick = () => {
-  const numberOfTasks = getRandomInt(MIN_NUMBER_OF_TASKS, taskMocks.length);
+const onFilterClick = (numberOfTasks) => {
   renderTasks(numberOfTasks);
 };
 
-const subscribeToFilterClicks = () => {
+const subscribeToFilterClicks = (filterMocks) => {
   const filters = document.querySelectorAll(`.filter__label`);
   filters.forEach((filter) => {
-    filter.addEventListener(`click`, onFilterClick);
+    const filterName = filter.childNodes[0].textContent.trim().toLowerCase();
+    const numberOfTasks = filterMocks.find((filterMock) => filterMock.name === filterName).numberOfTasks;
+    filter.addEventListener(`click`, () => onFilterClick(numberOfTasks));
   });
 };
 

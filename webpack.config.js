@@ -2,13 +2,15 @@
 
 const path = require(`path`);
 const HtmlWebpackPlugin = require(`html-webpack-plugin`);
+const webpack = require('webpack');
 
 module.exports = {
   mode: `development`,
   entry: `./src/main.js`,
   output: {
     filename: `bundle.js`,
-    path: path.join(__dirname, `public`)
+    publicPath: './',
+    path: path.join(__dirname, './public')
   },
   devtool: `source-map`,
   module: {
@@ -19,12 +21,13 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: `public/index.html`
+      template: "public/index.html",
     }),
+    new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
-    contentBase: path.join(__dirname, `public`),
-    publicPath: 'http: //localhost:8080/',
+    contentBase: path.join(__dirname, './public'),
+    publicPath: '/public/',
     hot: true,
     compress: true,
   },

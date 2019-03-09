@@ -1,32 +1,42 @@
+import {
+  TOTAL_NUMBER_OF_TASKS,
+  MIN_NUMBER_OF_TASKS,
+  MAX_NUMBER_OF_TASKS,
+} from '../constants';
+import {getRandomInt} from '../utils';
+
+
 const filterMocks = [
   {
     name: `all`,
-    count: 120,
+    numberOfTasks: TOTAL_NUMBER_OF_TASKS,
   },
   {
     name: `overdue`,
-    count: 3,
     checked: true,
+    numberOfTasks: getRandomInt(MIN_NUMBER_OF_TASKS, MAX_NUMBER_OF_TASKS),
   },
   {
     name: `today`,
     disabled: true,
+    numberOfTasks: getRandomInt(MIN_NUMBER_OF_TASKS, MAX_NUMBER_OF_TASKS),
   },
   {
     name: `favorites`,
     disabled: true,
+    numberOfTasks: getRandomInt(MIN_NUMBER_OF_TASKS, MAX_NUMBER_OF_TASKS),
   },
   {
     name: `repeating`,
-    count: 23,
+    numberOfTasks: getRandomInt(MIN_NUMBER_OF_TASKS, MAX_NUMBER_OF_TASKS),
   },
   {
     name: `tags`,
-    count: 56,
+    numberOfTasks: getRandomInt(MIN_NUMBER_OF_TASKS, MAX_NUMBER_OF_TASKS),
   },
   {
     name: `archive`,
-    count: 21,
+    numberOfTasks: getRandomInt(MIN_NUMBER_OF_TASKS, MAX_NUMBER_OF_TASKS),
   },
 ];
 
