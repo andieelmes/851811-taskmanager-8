@@ -1,9 +1,7 @@
-import {getRandomInt} from '../utils';
-
 const makeFilter = (config) => {
   const {
     name,
-    numberOfTasks = getRandomInt(1, 15),
+    numberOfTasks,
     checked,
     disabled,
   } = config;

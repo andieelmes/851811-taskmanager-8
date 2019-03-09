@@ -5,12 +5,10 @@ import {
   getRandomElements
 } from '../utils';
 
-
 import {COLORS} from '../constants';
-
 import Component from './taskComponent';
 
-class Task extends Component {
+class TaskEdit extends Component {
   constructor(data) {
     super();
     this._title = data.title;
@@ -24,17 +22,24 @@ class Task extends Component {
 
     this._randomTags = getRandomElements(this._tags, getRandomInt(3, 5));
 
-    this._onEdit = null;
+    this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
+    this._onDeleteButtonClick = this._onDeleteButtonClick.bind(this);
 
-    this._onEditButtonClick = this._onEditButtonClick.bind(this);
+    this._onSubmit = null;
+    this._onDelete = null;
+  }
+
+  _onSubmitButtonClick(evt) {
+    evt.preventDefault();
+    return typeof this._onSubmit === `function` && this._onSubmit();
+  }
+
+  _onDeleteButtonClick() {
+    return typeof this._onDelete === `function` && this._onDelete();
   }
 
   _isRepeated() {
     return Object.values(this._repeatingDays).some(([, repeat]) => repeat);
-  }
-
-  _onEditButtonClick() {
-    return typeof this._onEdit === `function` && this._onEdit();
   }
 
   _getCardControl() {
@@ -125,19 +130,24 @@ class Task extends Component {
     return [...hashtags].reduce((totalHashtags, hashtag) => totalHashtags + this._makeTaskHashtag(hashtag), ``);
   }
 
+  set onSubmit(fn) {
+    this._onSubmit = fn;
+  }
 
-  set onEdit(fn) {
-    this._onEdit = fn;
+  set onDelete(fn) {
+    this._onDelete = fn;
   }
 
   get template() {
     return `<article class="card
       card--${this._color}
+      card--edit
       ${this._type ? `card--${this._type}` : ``}
+      ${this._isRepeated() ? `card--repeat` : ``}
     ">
       <form class="card__form" method="get">
         <div class="card__inner">
-          ${this._getCardControl()}
+          ${this._getCardControl(this._isFavorite)}
           <div class="card__color-bar">
             <svg class="card__color-bar-wave" width="100%" height="10">
               <use xlink:href="#wave"></use>
@@ -209,7 +219,7 @@ class Task extends Component {
               </div>
             </div>
           </div>
-          <label class="card__img-wrap card__img-wrap--empty}">
+          <label class="card__img-wrap">
             <input
               type="file"
               class="card__img-input visually-hidden"
@@ -233,16 +243,20 @@ class Task extends Component {
   }
 
   bind() {
-    this._element.querySelector(`.card__btn--edit`)
-        .addEventListener(`click`, this._onEditButtonClick);
+    this._element.querySelector(`.card__form`)
+        .addEventListener(`submit`, this._onSubmitButtonClick);
+    this._element.querySelector(`.card__delete`)
+        .addEventListener(`click`, this._onDeleteButtonClick);
   }
 
   unbind() {
     if (this._element) {
-      this._element.querySelector(`.card__btn--edit`)
-        .removeEventListener(`click`, this._onEditButtonClick);
+      this._element.querySelector(`.card__form`)
+        .removeEventListener(`submit`, this._onSubmitButtonClick);
+      this._element.querySelector(`.card__delete`)
+        .removeEventListener(`click`, this._onDeleteButtonClick);
     }
   }
 }
 
-export default Task;
+export default TaskEdit;

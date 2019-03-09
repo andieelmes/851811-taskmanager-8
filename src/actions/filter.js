@@ -1,14 +1,15 @@
-import renderTasks from '../render/task';
+import renderTasks from './tasks';
 
-const onFilterClick = (e) => {
-  const numberOfTasks = +e.target.closest(`.filter__label`).querySelector(`.filter__all-count`).innerHTML;
+const onFilterClick = (numberOfTasks) => {
   renderTasks(numberOfTasks);
 };
 
-const subscribeToFilterClicks = () => {
+const subscribeToFilterClicks = (filterMocks) => {
   const filters = document.querySelectorAll(`.filter__label`);
   filters.forEach((filter) => {
-    filter.addEventListener(`click`, onFilterClick);
+    const filterName = filter.childNodes[0].textContent.trim().toLowerCase();
+    const numberOfTasks = filterMocks.find((filterMock) => filterMock.name === filterName).numberOfTasks;
+    filter.addEventListener(`click`, () => onFilterClick(numberOfTasks));
   });
 };
 

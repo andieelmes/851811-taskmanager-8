@@ -23,3 +23,9 @@ export const populateDom = (config) => {
 };
 
 export const getRandomBool = () => getRandomInt(0, 1) === 1;
+
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+  return newElement.firstChild;
+};

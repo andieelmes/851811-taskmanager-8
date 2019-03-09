@@ -3,7 +3,7 @@ import {populateDom} from './utils';
 import filterMocks from './data/filters';
 
 import makeFilter from './render/filter';
-import renderTasks from './render/task';
+import renderTasks from './actions/tasks';
 import subscribeToFilterClicks from './actions/filter';
 
 const filtersElement = document.querySelector(`.main__filter`);
@@ -16,7 +16,7 @@ const init = () => {
     clear: true
   });
   renderTasks();
-  subscribeToFilterClicks();
+  subscribeToFilterClicks(filterMocks);
 };
 
 init();

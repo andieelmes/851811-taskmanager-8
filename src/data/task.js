@@ -30,7 +30,7 @@ const getTask = () => {
       `deadline`
     ][getRandomInt(0, 2)],
     picture: `//picsum.photos/100/100?r=${Math.random()}`,
-    color: COLORS[getRandomInt(0, 4)],
+    color: COLORS[getRandomInt(0, COLORS.length - 1)],
     repeatingDays: [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`].map((day) => [day, getRandomBool()]),
     isFavorite: getRandomBool(),
   };
