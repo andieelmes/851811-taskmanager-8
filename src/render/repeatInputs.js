@@ -1,6 +1,6 @@
 import nanoid from 'nanoid';
 
-const getRepeatInputs = (repeatingDays)  => {
+const getRepeatInputs = (repeatingDays) => {
   const uniqId = nanoid();
 
   return [...repeatingDays].map((day) => {
