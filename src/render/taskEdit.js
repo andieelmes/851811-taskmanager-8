@@ -1,11 +1,13 @@
-import nanoid from 'nanoid';
-
 import {
   getRandomInt,
   getRandomElements
 } from '../utils';
 
-import {COLORS} from '../constants';
+import getCardControl from './cardControl';
+import getColorInputs from './colorInputs';
+import makeTaskHashtags from './hashtags';
+import getRepeatInputs from './repeatInputs';
+
 import Component from './taskComponent';
 
 class TaskEdit extends Component {
@@ -42,94 +44,6 @@ class TaskEdit extends Component {
     return Object.values(this._repeatingDays).some(([, repeat]) => repeat);
   }
 
-  _getCardControl() {
-    return `<div class="card__control">
-    <button type="button" class="card__btn card__btn--edit">
-      edit
-    </button>
-    <button type="button" class="card__btn card__btn--archive">
-      archive
-    </button>
-    <button
-      type="button"
-      class="card__btn card__btn--favorites ${this._isFavourite ? `` : `card__btn--disabled`}"
-    >
-    ${this._isFavourite ? `favourites` : `fav`}
-    </button>
-    </div>`;
-  }
-
-  _getColorInputs() {
-    return `<div class="card__colors-inner">
-      <h3 class="card__colors-title">Color</h3>
-      <div class="card__colors-wrap">
-        ${this._makeColors(COLORS)}
-      </div>
-    </div>`;
-  }
-
-  _getRepeatInputs() {
-    const uniqId = nanoid();
-
-    return [...this._repeatingDays].map((day) => {
-      const [name, repeats] = day;
-      return `<input
-          class="visually-hidden card__repeat-day-input"
-          type="checkbox"
-          id="repeat-${name}-2-${uniqId}"
-          name="repeat"
-          value="${name}"
-          ${repeats ? `checked` : ``}
-        />
-        <label class="card__repeat-day" for="repeat-${name}-2-${uniqId}"
-          >${name}</label
-        >`;
-    });
-  }
-
-  _makeColor(color, checked = false) {
-    const uniqId = nanoid();
-    return `<input
-        type="radio"
-        id="color-${color}-2-${uniqId}"
-        class="card__color-input card__color-input--${color} visually-hidden"
-        name="color"
-        value="${color}"
-        ${checked ? `checked` : ``}
-      />
-      <label
-        for="color-${color}-2-${uniqId}"
-        class="card__color card__color--${color}"
-        >${color}</label
-      >`;
-  }
-
-  _makeColors(colors) {
-    const randomCheckedRadioIndex = getRandomInt(0, colors.length);
-    return colors.map((color, index) => this._makeColor(color, index === randomCheckedRadioIndex)).join(``);
-  }
-
-  _makeTaskHashtag(hashtag) {
-    return `<span class="card__hashtag-inner">
-      <input
-        type="hidden"
-        name="hashtag"
-        value="repeat"
-        class="card__hashtag-hidden-input"
-      />
-      <button type="button" class="card__hashtag-name">
-        #${hashtag}
-      </button>
-      <button type="button" class="card__hashtag-delete">
-        delete
-      </button>
-    </span>`;
-  }
-
-  _makeTaskHashtags(hashtags) {
-    return hashtags.reduce((totalHashtags, hashtag) => totalHashtags + this._makeTaskHashtag(hashtag), ``);
-  }
-
   set onSubmit(fn) {
     this._onSubmit = fn;
   }
@@ -147,7 +61,7 @@ class TaskEdit extends Component {
     ">
       <form class="card__form" method="get">
         <div class="card__inner">
-          ${this._getCardControl(this._isFavorite)}
+          ${getCardControl(this._isFavorite)}
           <div class="card__color-bar">
             <svg class="card__color-bar-wave" width="100%" height="10">
               <use xlink:href="#wave"></use>
@@ -199,14 +113,14 @@ class TaskEdit extends Component {
 
                 <fieldset class="card__repeat-days" ${this._isRepeated() ? `` : `disabled`}>
                   <div class="card__repeat-days-inner">
-                    ${this._getRepeatInputs(this._repeatingDays)}
+                    ${getRepeatInputs(this._repeatingDays)}
                   </div>
                 </fieldset>
               </div>
 
               <div class="card__hashtag">
                 <div class="card__hashtag-list">
-                ${this._makeTaskHashtags(this._randomTags)}
+                ${makeTaskHashtags(this._randomTags)}
 
                 <label>
                   <input
@@ -231,7 +145,7 @@ class TaskEdit extends Component {
               class="card__img"
             />
           </label>
-          ${this._getColorInputs(this._color)}
+          ${getColorInputs(this._color)}
         </div>
         <div class="card__status-btns">
           <button class="card__save" type="submit">save</button>
