@@ -133,7 +133,7 @@ class Task extends Component {
               class="card__img"
             />
           </label>
-          ${getColorInputs}
+          ${getColorInputs(this._color)}
         </div>
         <div class="card__status-btns">
           <button class="card__save" type="submit">save</button>

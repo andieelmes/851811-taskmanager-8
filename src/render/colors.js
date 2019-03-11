@@ -1,7 +1,5 @@
 import nanoid from 'nanoid';
 
-import {getRandomInt} from '../utils';
-
 const makeColor = (color, checked = false) => {
   const uniqId = nanoid();
   return `<input
@@ -19,9 +17,8 @@ const makeColor = (color, checked = false) => {
     >`;
 };
 
-const makeColors = (colors) => {
-  const randomCheckedRadioIndex = getRandomInt(0, colors.length);
-  return colors.map((color, index) => makeColor(color, index === randomCheckedRadioIndex)).join(``);
+const makeColors = (colors, chosenColor) => {
+  return colors.map((color) => makeColor(color, color === chosenColor)).join(``);
 };
 
 export default makeColors;
