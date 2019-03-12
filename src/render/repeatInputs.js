@@ -3,8 +3,8 @@ import nanoid from 'nanoid';
 const getRepeatInputs = (repeatingDays) => {
   const uniqId = nanoid();
 
-  return [...repeatingDays].map((day) => {
-    const [name, repeats] = day;
+  return Object.keys(repeatingDays).map((name) => {
+    const repeats = repeatingDays[name];
     return `<input
         class="visually-hidden card__repeat-day-input"
         type="checkbox"

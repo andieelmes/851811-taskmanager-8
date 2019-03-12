@@ -31,7 +31,7 @@ class Task extends Component {
   }
 
   _isRepeated() {
-    return Object.values(this._repeatingDays).some(([, repeat]) => repeat);
+    return Object.values(this._repeatingDays).some((day) => day);
   }
 
   _onEditButtonClick() {
@@ -154,6 +154,13 @@ class Task extends Component {
       this._element.querySelector(`.card__btn--edit`)
         .removeEventListener(`click`, this._onEditButtonClick);
     }
+  }
+
+  update(data) {
+    this._title = data.title;
+    this._tags = data.tags;
+    this._color = data.color;
+    this._repeatingDays = data.repeatingDays;
   }
 }
 

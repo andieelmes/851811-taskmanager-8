@@ -3,9 +3,15 @@ import {
   getRandomBool
 } from '../utils';
 
-import {COLORS} from '../constants';
+import {
+  COLORS,
+  DAYS
+} from '../constants';
 
 const getTask = () => {
+  Object.keys(DAYS).map((value) => {
+    DAYS[value] = getRandomBool();
+  });
   return {
     title: [
       `Изучить теорию`,
@@ -31,7 +37,7 @@ const getTask = () => {
     ][getRandomInt(0, 2)],
     picture: `//picsum.photos/100/100?r=${Math.random()}`,
     color: COLORS[getRandomInt(0, COLORS.length - 1)],
-    repeatingDays: [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`].map((day) => [day, getRandomBool()]),
+    repeatingDays: DAYS,
     isFavorite: getRandomBool(),
   };
 };

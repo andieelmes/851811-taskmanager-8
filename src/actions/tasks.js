@@ -17,7 +17,7 @@ const defaultNumberOfTasks = getRandomInt(MIN_NUMBER_OF_TASKS, MAX_NUMBER_OF_TAS
 const makeTasks = (numberOfTasks) => {
   return new Array(+numberOfTasks).fill(``).map(() => {
     const data = generateTaskData();
-    return [new Task(data), new TaskEdit(data)];
+    return [new Task(data), new TaskEdit(data), data];
   });
 
 };
@@ -27,14 +27,22 @@ const renderTasks = (numberOfTasks = defaultNumberOfTasks) => {
 
   tasksElement.innerHTML = ``;
 
-  tasks.forEach(([taskComponent, editTaskComponent]) => {
+  tasks.forEach(([taskComponent, editTaskComponent, data]) => {
     taskComponent.onEdit = () => {
       editTaskComponent.render();
       tasksElement.replaceChild(editTaskComponent.element, taskComponent.element);
       taskComponent.unrender();
     };
 
-    editTaskComponent.onSubmit = () => {
+    editTaskComponent.onSubmit = (newObject) => {
+      data.title = newObject.title;
+      data.tags = newObject.tags;
+      data.color = newObject.color;
+      data.repeatingDays = newObject.repeatingDays;
+      data.dueDate = newObject.dueDate;
+
+      taskComponent.update(data);
+
       taskComponent.render();
       tasksElement.replaceChild(taskComponent.element, editTaskComponent.element);
       editTaskComponent.unrender();
