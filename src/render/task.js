@@ -1,3 +1,4 @@
+import moment from 'moment';
 
 import {
   getRandomInt,
@@ -70,42 +71,8 @@ class Task extends Component {
           <div class="card__settings">
             <div class="card__details">
               <div class="card__dates">
-                <button class="card__date-deadline-toggle" type="button">
-                  date: <span class="card__date-status">${this._dueDate ? `yes` : `no`}</span>
-                </button>
-
-                <fieldset class="card__date-deadline" ${this._dueDate ? `` : `disabled`}>
-                  <label class="card__input-deadline-wrap">
-                    <input
-                      class="card__date"
-                      type="text"
-                      placeholder="${new Date().toLocaleDateString(`en-gb`, {month: `long`, day: `numeric`})}"
-                      value="${new Date(this._dueDate).toLocaleDateString(`en-gb`, {month: `long`, day: `numeric`})}"
-                      name="date"
-                    />
-                  </label>
-                  <label class="card__input-deadline-wrap">
-                    <input
-                      class="card__time"
-                      type="text"
-                      placeholder="${new Date().toLocaleTimeString(`en-us`, {hour: `2-digit`, minute: `2-digit`})}"
-                      value="${new Date(this._dueDate).toLocaleTimeString(`en-us`, {hour: `2-digit`, minute: `2-digit`})}"
-                      name="time"
-                    />
-                  </label>
-                </fieldset>
-
-                <button class="card__repeat-toggle" type="button">
-                  repeat:<span class="card__repeat-status">${this._isRepeated() ? `yes` : `no`}</span>
-                </button>
-
-                <fieldset class="card__repeat-days" ${this._isRepeated() ? `` : `disabled`}>
-                  <div class="card__repeat-days-inner">
-                    ${getRepeatInputs(this._repeatingDays)}
-                  </div>
-                </fieldset>
+                ${moment(this._dueDate).format(`D MMMM h:mm`)}
               </div>
-
               <div class="card__hashtag">
                 <div class="card__hashtag-list">
                 ${makeTaskHashtags(this._randomTags)}
@@ -161,6 +128,7 @@ class Task extends Component {
     this._tags = data.tags;
     this._color = data.color;
     this._repeatingDays = data.repeatingDays;
+    this._dueDate = data.dueDate;
   }
 }
 

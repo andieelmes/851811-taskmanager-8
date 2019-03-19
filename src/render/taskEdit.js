@@ -37,7 +37,7 @@ class TaskEdit extends Component {
 
     this._onChangeDate = this._onChangeDate.bind(this);
     this._onChangeRepeated = this._onChangeRepeated.bind(this);
-    // this._onChangeColor = this._onChangeColor.bind(this);
+    this._onChangeColor = this._onChangeColor.bind(this);
   }
 
   _processForm(formData) {
@@ -61,6 +61,7 @@ class TaskEdit extends Component {
 
     for (const pair of formData.entries()) {
       const [property, value] = pair;
+
       if (taskEditMapper[property]) {
         taskEditMapper[property](value);
       }
@@ -81,17 +82,27 @@ class TaskEdit extends Component {
 
   _onChangeDate() {
     this._state.isDate = !this._state.isDate;
+
+    const formData = new FormData(this._element.querySelector(`.card__form`));
+    const newData = this._processForm(formData);
+
+    this.update(newData);
+
     this.unbind();
     this._partialUpdate();
     this.bind();
   }
 
-  // _onChangeColor() {
-  //   this._state.color = !this._state.color;
-  //   this.unbind();
-  //   this._partialUpdate();
-  //   this.bind();
-  // }
+  _onChangeColor() {
+    const formData = new FormData(this._element.querySelector(`.card__form`));
+    const newData = this._processForm(formData);
+
+    this.update(newData);
+
+    this.unbind();
+    this._partialUpdate();
+    this.bind();
+  }
 
   _onChangeRepeated() {
     this._state.isRepeated = !this._state.isRepeated;
@@ -109,7 +120,12 @@ class TaskEdit extends Component {
   }
 
   _partialUpdate() {
-    this._element.innerHTML = this.template;
+    const newElement = document.createElement(`div`);
+    newElement.innerHTML = this.template;
+    this._element.innerHTML = ``;
+    this._element.appendChild(newElement.querySelector(`form`));
+    this._element.classList = newElement.querySelector(`article`).classList;
+
   }
 
   set onSubmit(fn) {
@@ -232,9 +248,9 @@ class TaskEdit extends Component {
         .addEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__repeat-toggle`)
         .addEventListener(`click`, this._onChangeRepeated);
-    // this._element.querySelectorAll(`.card__color-input`).forEach((element) => {
-    //   element.addEventListener(`click`, this._onChangeColor);
-    // });
+    this._element.querySelectorAll(`.card__color-input`).forEach((element) => {
+      element.addEventListener(`click`, this._onChangeColor);
+    });
 
     if (this._state.isDate) {
       flatpickr(this._element.querySelector(`.card__date`), {
@@ -250,10 +266,6 @@ class TaskEdit extends Component {
         dateFormat: `h:i K`
       });
     }
-
-    // if (this._state.color) {
-    //   console.log(1);
-    // }
   }
 
   unbind() {
@@ -266,9 +278,9 @@ class TaskEdit extends Component {
         .removeEventListener(`click`, this._onChangeDate);
       this._element.querySelector(`.card__repeat-toggle`)
         .removeEventListener(`click`, this._onChangeRepeated);
-      // this._element.querySelectorAll(`.card__color-input`).forEach((element) => {
-      //     element.removeEventListener(`click`, this._onChangeColor);
-      //   });
+      this._element.querySelectorAll(`.card__color-input`).forEach((element) => {
+        element.removeEventListener(`click`, this._onChangeColor);
+      });
 
     }
   }
@@ -293,7 +305,9 @@ class TaskEdit extends Component {
       repeat: (value) => {
         target.repeatingDays[value] = true;
       },
-      date: (value) => target.dueDate[value],
+      date: (value) => {
+        target.dueDate = value;
+      },
     };
   }
 }
