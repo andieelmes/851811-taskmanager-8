@@ -8,7 +8,6 @@ import {
 import getCardControl from './cardControl';
 import getColorInputs from './colorInputs';
 import makeTaskHashtags from './hashtags';
-import getRepeatInputs from './repeatInputs';
 
 import Component from './taskComponent';
 
